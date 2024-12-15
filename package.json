@@ -30,6 +30,7 @@
     "prisma": "^6.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-dom-confetti": "^0.2.0",
     "react-dropzone": "^14.3.5",
     "react-rnd": "^10.4.13",
     "sharp": "^0.33.5",
