@@ -2,11 +2,11 @@
 
 import { db } from "@/db"
 import { COLORS, MODELS } from "@/validators/option-validator"
-import { PRODUCTS_PRICES } from "@/config/products"
+import { PRODUCT_PRICES } from "@/config/products"
 
 export type CaseColor = typeof COLORS[number]['value']
-export type CaseFinish = keyof typeof PRODUCTS_PRICES.finish
-export type CaseMaterial = keyof typeof PRODUCTS_PRICES.material
+export type CaseFinish = keyof typeof PRODUCT_PRICES.finish
+export type CaseMaterial = keyof typeof PRODUCT_PRICES.material
 export type PhoneModel = typeof MODELS.options[number]['value']
 
 export type SaveConfigArgs = {
