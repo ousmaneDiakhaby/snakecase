@@ -1,30 +1,31 @@
-import {notFound} from "next/navigation";
-import {db} from "@/db";
+import { notFound } from "next/navigation";
+import { db } from "@/db";
 import DesignPreview from "@/app/configure/preview/design-preview";
 
-interface PageProps {
-  searchParams: {
-    [key: string]: string | string[] | undefined
-  }
-}
+type PageProps = {
+  searchParams: Promise<{
+    [key: string]: string | string[] | undefined;
+  }>;
+};
 
-export default async function Page({searchParams}: PageProps) {
-  const {id} = searchParams
+export default async function Page({ searchParams }: PageProps) {
+  // Résolution de la Promise pour obtenir les paramètres
+  const resolvedSearchParams = await searchParams;
+  const { id } = resolvedSearchParams;
 
-  if (!id || typeof id !== 'string') {
-    return notFound()
+  if (!id || typeof id !== "string") {
+    return notFound();
   }
 
   const configuration = await db.configuration.findUnique({
     where: {
-      id: id
-    }
-  })
+      id,
+    },
+  });
 
   if (!configuration) {
-    return notFound()
+    return notFound();
   }
 
-  return <DesignPreview configuration={configuration}/>
+  return <DesignPreview configuration={configuration} />;
 }
-
