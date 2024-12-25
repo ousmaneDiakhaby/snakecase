@@ -1,46 +1,25 @@
-"use server"
+'use server'
 
-import { db } from "@/db"
-import { COLORS, MODELS } from "@/validators/option-validator"
-import { PRODUCT_PRICES } from "@/config/products"
-
-export type CaseColor = typeof COLORS[number]['value']
-export type CaseFinish = keyof typeof PRODUCT_PRICES.finish
-export type CaseMaterial = keyof typeof PRODUCT_PRICES.material
-export type PhoneModel = typeof MODELS.options[number]['value']
+import { db } from '@/db'
+import { CaseColor, CaseFinish, CaseMaterial, PhoneModel } from '@prisma/client'
 
 export type SaveConfigArgs = {
-    configId: string
-    color: CaseColor
-    finish: CaseFinish
-    material: CaseMaterial
-    model: PhoneModel
+  color: CaseColor
+  finish: CaseFinish
+  material: CaseMaterial
+  model: PhoneModel
+  configId: string
 }
 
 export async function saveConfig({
-    configId,
-    color,
-    finish,
-    material,
-    model
+  color,
+  finish,
+  material,
+  model,
+  configId,
 }: SaveConfigArgs) {
-    try {
-        await db.configuration.update({
-            where: { id: configId },
-            data: {
-                color,
-                finish,
-                material,
-                model,
-            },
-        })
-        
-        return { success: true }
-    } catch (error) {
-        console.error('Error saving configuration:', error)
-        return { 
-            success: false, 
-            error: 'Failed to save configuration' 
-        }
-    }
+  await db.configuration.update({
+    where: { id: configId },
+    data: { color, finish, material, model },
+  })
 }

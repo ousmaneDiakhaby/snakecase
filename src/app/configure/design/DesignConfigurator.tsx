@@ -1,34 +1,34 @@
 'use client'
 
 import HandleComponent from '@/components/HandleComponent'
-import {AspectRatio} from '@/components/ui/aspect-ratio'
-import {ScrollArea} from '@/components/ui/scroll-area'
-import {cn, formatPrice} from '@/lib/utils'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn, formatPrice } from '@/lib/utils'
 import NextImage from 'next/image'
-import {Rnd} from 'react-rnd'
-import {RadioGroup} from '@headlessui/react'
-import {useRef, useState} from 'react'
+import { Rnd } from 'react-rnd'
+import { RadioGroup } from '@headlessui/react'
+import { useRef, useState } from 'react'
 import {
   COLORS,
   FINISHES,
   MATERIALS,
   MODELS,
 } from '@/validators/option-validator'
-import {Label} from '@/components/ui/label'
+import { Label } from '@/components/ui/label'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import {Button} from '@/components/ui/button'
-import {ArrowRight, Check, ChevronsUpDown} from 'lucide-react'
-import {BASE_PRICE} from '@/config/products'
-import {useUploadThing} from '@/lib/uploadthing'
-import {useToast} from '@/components/ui/use-toast'
-import {useMutation} from '@tanstack/react-query'
-import {saveConfig as _saveConfig, SaveConfigArgs} from './design.actions'
-import {useRouter} from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { ArrowRight, Check, ChevronsUpDown } from 'lucide-react'
+import { BASE_PRICE } from '@/config/config.products'
+import { useUploadThing } from '@/lib/uploadthing'
+import { useToast } from '@/components/ui/use-toast'
+import { useMutation } from '@tanstack/react-query'
+import { saveConfig as _saveConfig, SaveConfigArgs } from './design.actions'
+import { useRouter } from 'next/navigation'
 
 interface DesignConfiguratorProps {
   configId: string
@@ -37,14 +37,14 @@ interface DesignConfiguratorProps {
 }
 
 const DesignConfigurator = ({
-                              configId,
-                              imageUrl,
-                              imageDimensions,
-                            }: DesignConfiguratorProps) => {
-  const {toast} = useToast()
+  configId,
+  imageUrl,
+  imageDimensions,
+}: DesignConfiguratorProps) => {
+  const { toast } = useToast()
   const router = useRouter()
 
-  const {mutate: saveConfig, isPending} = useMutation({
+  const { mutate: saveConfig, isPending } = useMutation({
     mutationKey: ['save-config'],
     mutationFn: async (args: SaveConfigArgs) => {
       await Promise.all([saveConfiguration(), _saveConfig(args)])
@@ -86,7 +86,7 @@ const DesignConfigurator = ({
   const phoneCaseRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const {startUpload} = useUploadThing('imageUploader')
+  const { startUpload } = useUploadThing('imageUploader')
 
   async function saveConfiguration() {
     try {
@@ -97,7 +97,7 @@ const DesignConfigurator = ({
         height,
       } = phoneCaseRef.current!.getBoundingClientRect()
 
-      const {left: containerLeft, top: containerTop} =
+      const { left: containerLeft, top: containerTop } =
         containerRef.current!.getBoundingClientRect()
 
       const leftOffset = caseLeft - containerLeft
@@ -128,9 +128,9 @@ const DesignConfigurator = ({
       const base64Data = base64.split(',')[1]
 
       const blob = base64ToBlob(base64Data, 'image/png')
-      const file = new File([blob], 'filename.png', {type: 'image/png'})
+      const file = new File([blob], 'filename.png', { type: 'image/png' })
 
-      await startUpload([file], {configId})
+      await startUpload([file], { configId })
     } catch (err) {
       toast({
         title: 'Something went wrong',
@@ -148,7 +148,7 @@ const DesignConfigurator = ({
       byteNumbers[i] = byteCharacters.charCodeAt(i)
     }
     const byteArray = new Uint8Array(byteNumbers)
-    return new Blob([byteArray], {type: mimeType})
+    return new Blob([byteArray], { type: mimeType })
   }
 
   return (
@@ -168,8 +168,7 @@ const DesignConfigurator = ({
               className='pointer-events-none z-50 select-none'
             />
           </AspectRatio>
-          <div
-            className='absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]'/>
+          <div className='absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]' />
           <div
             className={cn(
               'absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px]',
@@ -185,25 +184,25 @@ const DesignConfigurator = ({
             height: imageDimensions.height / 4,
             width: imageDimensions.width / 4,
           }}
-          onResizeStop={(_, __, ref, ___, {x, y}) => {
+          onResizeStop={(_, __, ref, ___, { x, y }) => {
             setRenderedDimension({
               height: parseInt(ref.style.height.slice(0, -2)),
               width: parseInt(ref.style.width.slice(0, -2)),
             })
 
-            setRenderedPosition({x, y})
+            setRenderedPosition({ x, y })
           }}
           onDragStop={(_, data) => {
-            const {x, y} = data
-            setRenderedPosition({x, y})
+            const { x, y } = data
+            setRenderedPosition({ x, y })
           }}
           className='absolute z-20 border-[3px] border-primary'
           lockAspectRatio
           resizeHandleComponent={{
-            bottomRight: <HandleComponent/>,
-            bottomLeft: <HandleComponent/>,
-            topRight: <HandleComponent/>,
-            topLeft: <HandleComponent/>,
+            bottomRight: <HandleComponent />,
+            bottomLeft: <HandleComponent />,
+            topRight: <HandleComponent />,
+            topLeft: <HandleComponent />,
           }}>
           <div className='relative w-full h-full'>
             <NextImage
@@ -228,7 +227,7 @@ const DesignConfigurator = ({
               Customize your case
             </h2>
 
-            <div className='w-full h-px bg-zinc-200 my-6'/>
+            <div className='w-full h-px bg-zinc-200 my-6' />
 
             <div className='relative mt-4 h-full flex flex-col justify-between'>
               <div className='flex flex-col gap-6'>
@@ -246,7 +245,7 @@ const DesignConfigurator = ({
                       <RadioGroup.Option
                         key={color.label}
                         value={color}
-                        className={({active, checked}) =>
+                        className={({ active, checked }) =>
                           cn(
                             'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 active:ring-0 focus:ring-0 active:outline-none focus:outline-none border-2 border-transparent',
                             {
@@ -274,7 +273,7 @@ const DesignConfigurator = ({
                         role='combobox'
                         className='w-full justify-between'>
                         {options.model.label}
-                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50'/>
+                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
@@ -289,7 +288,7 @@ const DesignConfigurator = ({
                             }
                           )}
                           onClick={() => {
-                            setOptions((prev) => ({...prev, model}))
+                            setOptions((prev) => ({ ...prev, model }))
                           }}>
                           <Check
                             className={cn(
@@ -307,7 +306,7 @@ const DesignConfigurator = ({
                 </div>
 
                 {[MATERIALS, FINISHES].map(
-                  ({name, options: selectableOptions}) => (
+                  ({ name, options: selectableOptions }) => (
                     <RadioGroup
                       key={name}
                       value={options[name]}
@@ -325,7 +324,7 @@ const DesignConfigurator = ({
                           <RadioGroup.Option
                             key={option.value}
                             value={option}
-                            className={({active, checked}) =>
+                            className={({ active, checked }) =>
                               cn(
                                 'relative block cursor-pointer rounded-lg bg-white px-6 py-4 shadow-sm border-2 border-zinc-200 focus:outline-none ring-0 focus:ring-0 outline-none sm:flex sm:justify-between',
                                 {
@@ -372,13 +371,13 @@ const DesignConfigurator = ({
         </ScrollArea>
 
         <div className='w-full px-8 h-16 bg-white'>
-          <div className='h-px w-full bg-zinc-200'/>
+          <div className='h-px w-full bg-zinc-200' />
           <div className='w-full h-full flex justify-end items-center'>
             <div className='w-full flex gap-6 items-center'>
               <p className='font-medium whitespace-nowrap'>
                 {formatPrice(
                   (BASE_PRICE + options.finish.price + options.material.price) /
-                  100
+                    100
                 )}
               </p>
               <Button
@@ -397,7 +396,7 @@ const DesignConfigurator = ({
                 size='sm'
                 className='w-full'>
                 Continue
-                <ArrowRight className='h-4 w-4 ml-1.5 inline'/>
+                <ArrowRight className='h-4 w-4 ml-1.5 inline' />
               </Button>
             </div>
           </div>
